@@ -7,6 +7,7 @@ import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
 import { Header } from "../components/Header";
+import backendURL from "../config";
 
 export const Signup = () => {
   const [firstName, setFirstName] = useState("");
@@ -55,7 +56,7 @@ export const Signup = () => {
               <Button
                 onClick={async () => {
                   const response = await axios.post(
-                    "http://localhost:3000/api/v1/user/signup",
+                    `${backendURL}/user/signup`,
                     {
                       username,
                       firstName,
