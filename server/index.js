@@ -1,13 +1,41 @@
-// backend/index.js
-const express = require("express");
-const cors = require("cors");
-const rootRouter = require("./routes/index");
-
+import express from "express";
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+// IMPORTS
+import dotenv from "dotenv";
+dotenv.config();
+import cors from "cors";
 
-app.use("/api/v1", rootRouter);
+// DATABASE
+import connectDB from "./db/db.js";
 
-app.listen(3000);
+connectDB()
+  .then(() => {
+    app.on("error", (error) => {
+      console.log("ERROR!!: ", error);
+      throw error;
+    });
+    app.listen(process.env.PORT || 5000, () => {
+      console.log(`Server is running at port: ${process.env.PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log(`MONGO DB CONNECTION FAILED!! `, error);
+  });
+
+// MIDDLEWARES
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+
+// ROUTERS
+import userRouter from "./routes/user.routes.js";
+import accountRouter from "./routes/account.routes.js";
+
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/account", accountRouter);

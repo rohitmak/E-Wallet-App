@@ -8,8 +8,8 @@ import backendURL from "../config";
 export const Dashboard = () => {
   const [balance, setBalance] = useState(0);
 
-  useEffect(() => {
-    axios
+  useEffect(async () => {
+    await axios
       .get(`${backendURL}/account/balance`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
