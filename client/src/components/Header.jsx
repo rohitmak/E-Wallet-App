@@ -6,7 +6,7 @@ const Header = () => {
     <div className="bg-white shadow w-full h-16 flex justify-between items-center">
       <div className="ml-4">
         <Link to={"/"}>
-          <img className="h-16" src="" alt="Logo" />
+          <img className="h-16" src="" alt="Paymate Logo" />
         </Link>
       </div>
       <div className="flex mr-4 gap-2">

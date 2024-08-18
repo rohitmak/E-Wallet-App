@@ -9,11 +9,19 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("");
 
-  useEffect(async () => {
-    const response = await axios.get(
-      `${backendURL}/user/bulk?filter=` + filter
-    );
-    setUsers(response.data.user);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await axios.get(
+        `${backendURL}/user/bulk?filter=` + filter,
+        {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      setUsers(response.data.user);
+    };
+    fetchUsers();
   }, [filter]);
 
   return (
@@ -59,7 +67,7 @@ const User = ({ user }) => {
       <div className="flex flex-col justify-center h-ful">
         <Button
           onClick={() => {
-            navigate("/send?id=" + user._id + "&name=" + user.firstName);
+            navigate("/sendmoney?id=" + user._id + "&name=" + user.firstName);
           }}
           label={"Send Money"}
         />

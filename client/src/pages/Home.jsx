@@ -21,7 +21,7 @@ const Home = () => {
           </div>
         </div>
         <div className="m-4">
-          <img className="h-auto w-auto" src="../1706796536129.avif" alt="" />
+          <img className="h-auto w-auto" src="" alt="E-Wallet Image" />
         </div>
       </div>
       <footer className="bg-gray-600 text-white text-center p-4 mt-8">
