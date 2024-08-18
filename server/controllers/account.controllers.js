@@ -1,5 +1,4 @@
 import Account from "../models/account.model.js";
-import mongoose from "mongoose";
 
 export const getBalance = async (req, res) => {
   try {
@@ -20,31 +19,18 @@ export const getBalance = async (req, res) => {
 };
 
 // TRANSACTION IN DATABASE (IMPORTANT)
-
 export const transferBalance = async (req, res) => {
+  const session = await Account.startSession();
+  session.startTransaction();
   try {
-    if (!req.userId || !req.body || !req.body.amount || !req.body.to) {
-      return res.status(400).json({
-        message: "Invalid request",
-      });
+    const { amount, toUserId } = req.body;
+
+    // Validate amount and toUserId
+    if (!amount || !toUserId) {
+      throw new Error("Invalid input");
     }
-
-    const session = await mongoose.startSession();
-
-    session.startTransaction();
 
     // Fetch the accounts within the transaction
-    const toAccount = await Account.findOne({ userId: req.body.to }).session(
-      session
-    );
-
-    if (!toAccount) {
-      await session.abortTransaction();
-      return res.status(404).json({
-        message: "Invalid account",
-      });
-    }
-
     const fromAccount = await Account.findOne({ userId: req.userId }).session(
       session
     );
@@ -56,13 +42,25 @@ export const transferBalance = async (req, res) => {
       });
     }
 
-    // Perform the transfer
+    const toAccount = await Account.findOne({ userId: toUserId }).session(
+      session
+    );
+
+    if (!toAccount) {
+      await session.abortTransaction();
+      return res.status(404).json({
+        message: "Invalid account",
+      });
+    }
+
+    // Perform the balance update operations
     await Account.updateOne(
       { userId: req.userId },
       { $inc: { balance: -amount } }
     ).session(session);
+
     await Account.updateOne(
-      { userId: req.body.to },
+      { userId: toUserId },
       { $inc: { balance: amount } }
     ).session(session);
 
@@ -73,6 +71,9 @@ export const transferBalance = async (req, res) => {
       message: "Transfer successful",
     });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    await session.abortTransaction();
+    res.status(500).json({ message: "Server Error", error: error.message });
+  } finally {
+    session.endSession(); // End the session regardless of success or error
   }
 };

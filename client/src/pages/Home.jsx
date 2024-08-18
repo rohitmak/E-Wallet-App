@@ -1,13 +1,14 @@
-import { Header } from "../components/Header";
+import React from "react";
+import Header from "../components/Header.jsx";
 
-export function Home() {
+const Home = () => {
   return (
     <div className="bg-slate-300 h-full grid-1">
       <Header />
       <div className="flex flex-col md:flex-row justify-between ml-2">
         <div>
           <div className="flex justify-start ml-4 h-20 mt-4">
-            <img src="../1697527183231.avif" alt="" />
+            <img src="" alt="Main Image" />
           </div>
           <div className="flex flex-col justify-center mt-16 gap-4">
             <h1 className="font-bold text-3xl md:text-6xl">
@@ -28,4 +29,6 @@ export function Home() {
       </footer>
     </div>
   );
-}
+};
+
+export default Home;

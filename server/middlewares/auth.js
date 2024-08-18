@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(500).json({ message: "Error Occurred while authorizing" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

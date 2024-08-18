@@ -1,6 +1,7 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
-export function BottomWarning({ label, buttonText, to }) {
+const BottomWarning = ({ label, buttonText, to }) => {
   return (
     <div className="py-2 text-sm flex justify-center">
       <div>{label}</div>
@@ -9,4 +10,6 @@ export function BottomWarning({ label, buttonText, to }) {
       </Link>
     </div>
   );
-}
+};
+
+export default BottomWarning;

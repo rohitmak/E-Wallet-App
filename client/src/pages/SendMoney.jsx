@@ -1,10 +1,11 @@
+import React from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-import backendURL from "../config";
+import backendURL from "../config.js";
 
-export const SendMoney = () => {
-  const [searchParams] = useSearchParams();
+const SendMoney = () => {
+  const [searchParams] = useSearchParams("");
   const id = searchParams.get("id");
   const name = searchParams.get("name");
   const [amount, setAmount] = useState(0);
@@ -45,6 +46,8 @@ export const SendMoney = () => {
               </div>
               <button
                 onClick={async () => {
+                  const token = localStorage.getItem("token");
+
                   await axios.post(
                     `${backendURL}/account/transfer`,
                     {
@@ -53,8 +56,7 @@ export const SendMoney = () => {
                     },
                     {
                       headers: {
-                        Authorization:
-                          "Bearer " + localStorage.getItem("token"),
+                        Authorization: `Bearer " + ${token}`,
                       },
                     }
                   );
@@ -70,3 +72,5 @@ export const SendMoney = () => {
     </div>
   );
 };
+
+export default SendMoney;

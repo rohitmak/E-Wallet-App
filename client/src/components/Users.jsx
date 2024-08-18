@@ -1,18 +1,19 @@
+import React from "react";
 import { useEffect, useState } from "react";
-import { Button } from "./Button";
+import Button from "./Button.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import backendURL from "../config";
+import backendURL from "../config.js";
 
-export const Users = () => {
-  // Replace with backend call
+const Users = () => {
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    axios.get(`${backendURL}/user/bulk?filter=` + filter).then((response) => {
-      setUsers(response.data.user);
-    });
+  useEffect(async () => {
+    const response = await axios.get(
+      `${backendURL}/user/bulk?filter=` + filter
+    );
+    setUsers(response.data.user);
   }, [filter]);
 
   return (
@@ -37,7 +38,7 @@ export const Users = () => {
   );
 };
 
-function User({ user }) {
+const User = ({ user }) => {
   const navigate = useNavigate();
 
   return (
@@ -57,7 +58,7 @@ function User({ user }) {
 
       <div className="flex flex-col justify-center h-ful">
         <Button
-          onClick={(e) => {
+          onClick={() => {
             navigate("/send?id=" + user._id + "&name=" + user.firstName);
           }}
           label={"Send Money"}
@@ -65,4 +66,6 @@ function User({ user }) {
       </div>
     </div>
   );
-}
+};
+
+export default Users;

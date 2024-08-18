@@ -1,13 +1,6 @@
-import { useEffect, useState } from "react";
+import React from "react";
 
-export const Appbar = () => {
-  // const [user, setUser] = useState("");
-
-  // useEffect(() => {
-  //   const getUser = userId;
-  //   setUser(getUser);
-  // });
-
+const Appbar = () => {
   return (
     <div className="shadow h-14 flex justify-between">
       <div className="flex flex-col justify-center h-full ml-4">PayTM App</div>
@@ -20,3 +13,5 @@ export const Appbar = () => {
     </div>
   );
 };
+
+export default Appbar;

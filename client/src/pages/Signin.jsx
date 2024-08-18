@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { BottomWarning } from "../components/BottomWarning";
-import { Button } from "../components/Button";
-import { Header } from "../components/Header";
-import { Heading } from "../components/Heading";
-import { InputBox } from "../components/InputBox";
-import { SubHeading } from "../components/SubHeading";
-import backendURL from "../config";
+import BottomWarning from "../components/BottomWarning.jsx";
+import Button from "../components/Button.jsx";
+import Header from "../components/Header.jsx";
+import Heading from "../components/Heading.jsx";
+import InputBox from "../components/InputBox.jsx";
+import SubHeading from "../components/SubHeading.jsx";
+import backendURL from "../config.js";
 
-export const Signin = () => {
+const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -37,6 +38,11 @@ export const Signin = () => {
             <div className="pt-4">
               <Button
                 onClick={async () => {
+                  if (!username || !password) {
+                    alert("Please Enter all the fields");
+                    return;
+                  }
+
                   const response = await axios.post(
                     `${backendURL}/user/signin`,
                     {
@@ -61,3 +67,5 @@ export const Signin = () => {
     </>
   );
 };
+
+export default Signin;

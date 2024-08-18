@@ -1,15 +1,16 @@
+import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { BottomWarning } from "../components/BottomWarning";
-import { Button } from "../components/Button";
-import { Heading } from "../components/Heading";
-import { InputBox } from "../components/InputBox";
-import { SubHeading } from "../components/SubHeading";
-import { Header } from "../components/Header";
-import backendURL from "../config";
+import BottomWarning from "../components/BottomWarning.jsx";
+import Button from "../components/Button.jsx";
+import Heading from "../components/Heading.jsx";
+import InputBox from "../components/InputBox.jsx";
+import SubHeading from "../components/SubHeading.jsx";
+import Header from "../components/Header.jsx";
+import backendURL from "../config.js";
 
-export const Signup = () => {
+const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -23,26 +24,26 @@ export const Signup = () => {
         <div className="flex flex-col justify-center">
           <div className="rounded-lg bg-white w-80 text-center p-2 h-max px-4">
             <Heading label={"Sign up"} />
-            <SubHeading label={"Enter your infromation to create an account"} />
+            <SubHeading label={"Create an account"} />
             <InputBox
               onChange={(e) => {
                 setFirstName(e.target.value);
               }}
-              placeholder="John"
+              placeholder="Rohit"
               label={"First Name"}
             />
             <InputBox
               onChange={(e) => {
                 setLastName(e.target.value);
               }}
-              placeholder="Doe"
+              placeholder="Makwana"
               label={"Last Name"}
             />
             <InputBox
               onChange={(e) => {
                 setUsername(e.target.value);
               }}
-              placeholder="abc123@gmail.com"
+              placeholder="example123@gmail.com"
               label={"Email"}
             />
             <InputBox
@@ -55,17 +56,18 @@ export const Signup = () => {
             <div className="pt-4">
               <Button
                 onClick={async () => {
-                  const response = await axios.post(
-                    `${backendURL}/user/signup`,
-                    {
-                      username,
-                      firstName,
-                      lastName,
-                      password,
-                    }
-                  );
-                  localStorage.setItem("token", response.data.token);
-                  navigate("/dashboard");
+                  if (!firstName || !lastName || !username || !password) {
+                    alert("Please Enter all the fields");
+                    return;
+                  }
+
+                  await axios.post(`${backendURL}/user/signup`, {
+                    username,
+                    firstName,
+                    lastName,
+                    password,
+                  });
+                  navigate("/signin");
                 }}
                 label={"Sign up"}
               />
@@ -81,3 +83,5 @@ export const Signup = () => {
     </>
   );
 };
+
+export default Signup;

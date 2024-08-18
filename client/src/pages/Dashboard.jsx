@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
-import { Appbar } from "../components/Appbar";
-import { Balance } from "../components/Balance";
-import { Users } from "../components/Users";
+import React, { useState } from "react";
+import Appbar from "../components/Appbar.jsx";
+import Balance from "../components/Balance.jsx";
+import Users from "../components/Users.jsx";
+import { useNavigate } from "react-router-dom";
+import backendURL from "../config.js";
 import axios from "axios";
-import backendURL from "../config";
 
-export const Dashboard = () => {
+const Dashboard = () => {
+  const token = localStorage.getItem("token");
   const [balance, setBalance] = useState(0);
-
   useEffect(async () => {
-    await axios
-      .get(`${backendURL}/account/balance`, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setBalance(res.data.balance);
-      });
+    const response = await axios.get(backendURL + "/account/balance", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    setBalance(res.data.balance);
   }, []);
-
+  const navigate = useNavigate();
+  if (token == null) {
+    alert("Please SignIn First");
+    return <navigate to="/signin"></navigate>;
+  }
   return (
     <div>
       <Appbar />
@@ -30,3 +32,5 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+export default Dashboard;

@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const Header = () => {
+const Header = () => {
   return (
     <div className="bg-white shadow w-full h-16 flex justify-between items-center">
       <div className="ml-4">
         <Link to={"/"}>
-          <img className="h-16" src="../paytm.svg" alt="" />
+          <img className="h-16" src="" alt="Logo" />
         </Link>
       </div>
       <div className="flex mr-4 gap-2">
@@ -28,3 +28,5 @@ export const Header = () => {
     </div>
   );
 };
+
+export default Header;
